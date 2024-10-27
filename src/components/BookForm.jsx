@@ -14,9 +14,10 @@ export default function BookForm({ isEdit, setEdit, editData, setEditData }) {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState(initialFormData);
   const handleOnchange = (e) => {
+
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.name === "featured"?e.target.checked: e.target.value,
     });
   };
 
@@ -120,7 +121,7 @@ export default function BookForm({ isEdit, setEdit, editData, setEditData }) {
               onChange={handleOnchange}
               checked={formData.featured}
             />
-            <label htmlFor="featured" className="ml-2 text-sm">
+            <label htmlFor="input-Bookfeatured" className="ml-2 text-sm">
               {" "}
               This is a featured book{" "}
             </label>

@@ -1,10 +1,17 @@
+import { useDispatch } from "react-redux";
+import { removeBook } from "../redux/books/thunk/booksThunk";
+
 /* eslint-disable react/prop-types */
 export default function BookCard({ setEditData, book,setEdit }) {
   const { name, author, thumbnail, price, rating, featured, id } = book || {};
+  const dispatch = useDispatch()
   const handleEditClick = (obj)=>{
-    console.log("hala");
     setEditData(obj)
     setEdit(true)
+  }
+
+  const handleDelete = (id)=>{
+    dispatch(removeBook(id))
   }
   return (
     <div className="book-card">
@@ -34,7 +41,7 @@ export default function BookCard({ setEditData, book,setEdit }) {
                 />
               </svg>
             </button>
-            <button className="lws-delete">
+            <button className="lws-delete" onClick={()=>handleDelete(id)}>
               <svg
                 fill="none"
                 viewBox="0 0 24 24"

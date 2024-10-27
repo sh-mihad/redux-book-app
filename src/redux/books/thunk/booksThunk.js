@@ -1,4 +1,4 @@
-import { addBook, editBook, loadedBooks } from "../actions";
+import { addBook, deleteBook, editBook, loadedBooks } from "../actions";
 
 const mainUrl = "http://localhost:9000";
 
@@ -33,6 +33,15 @@ export const updateBook = (book) => {
     });
     const data = await response.json();
     dispatch(editBook(data));
+    
+  };
+};
+export const removeBook = (id) => {
+  return async (dispatch) => {
+     await fetch(`${mainUrl}/books/${id}`, {
+      method: "DELETE"
+    });
+    dispatch(deleteBook(id));
     
   };
 };
