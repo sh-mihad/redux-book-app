@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { postBook } from "../redux/books/thunk/booksThunk";
 const initialFormData = {
   name: "",
   author: "",
@@ -9,6 +11,7 @@ const initialFormData = {
 };
 export default function BookForm() {
   const [formData, setFormData] = useState(initialFormData);
+  const dispatch = useDispatch()
 
   const handleOnchange = (e) => {
     setFormData({
@@ -19,6 +22,7 @@ export default function BookForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    dispatch(postBook(formData))
   };
   return (
     <div>

@@ -5,7 +5,7 @@ const initialState = [];
 const booksReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOADED:
-      return [...state, ...action.payload];
+      return [...action.payload];
     case ADD:
       return [...state, { ...action.payload }];
     case EDIT:
