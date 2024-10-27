@@ -1,4 +1,4 @@
-import { addBook, loadedBooks } from "../actions";
+import { addBook, editBook, loadedBooks } from "../actions";
 
 const mainUrl = "http://localhost:9000";
 
@@ -19,5 +19,20 @@ export const postBook = (book) => {
     });
     const data = await response.json();
     dispatch(addBook(data));
+    
+  };
+};
+export const updateBook = (book) => {
+  return async (dispatch) => {
+    const response = await fetch(`${mainUrl}/books/${book.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(book),
+    });
+    const data = await response.json();
+    dispatch(editBook(data));
+    
   };
 };

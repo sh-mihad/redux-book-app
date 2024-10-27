@@ -1,6 +1,7 @@
-import { useState } from "react";
+/* eslint-disable react/prop-types */
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { postBook } from "../redux/books/thunk/booksThunk";
+import { postBook, updateBook } from "../redux/books/thunk/booksThunk";
 const initialFormData = {
   name: "",
   author: "",
@@ -9,10 +10,9 @@ const initialFormData = {
   rating: "",
   featured: "",
 };
-export default function BookForm() {
+export default function BookForm({ isEdit, setEdit, editData, setEditData }) {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState(initialFormData);
-  const dispatch = useDispatch()
-
   const handleOnchange = (e) => {
     setFormData({
       ...formData,
@@ -20,14 +20,27 @@ export default function BookForm() {
     });
   };
 
+  useEffect(() => {
+    if (isEdit && editData) {
+      setFormData(editData);
+    }
+  }, [isEdit, editData]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(postBook(formData))
+    if (isEdit) {
+      dispatch(updateBook(formData));
+      setEdit(false);
+      setEditData(null);
+    } else {
+      dispatch(postBook(formData));
+    }
+    setFormData(initialFormData);
   };
   return (
     <div>
       <div className="p-4 overflow-hidden bg-white shadow-cardShadow rounded-md">
-        <h4 className="mb-8 text-xl font-bold text-center">Add New Book</h4>
+        <h4 className="mb-8 text-xl font-bold text-center">{isEdit?"Edit":"Add New"} Book</h4>
         <form className="book-form" onSubmit={handleSubmit}>
           <div className="space-y-2">
             <label htmlFor="name">Book Name</label>
@@ -105,7 +118,7 @@ export default function BookForm() {
               name="featured"
               className="w-4 h-4"
               onChange={handleOnchange}
-              value={formData.featured}
+              checked={formData.featured}
             />
             <label htmlFor="featured" className="ml-2 text-sm">
               {" "}
@@ -114,7 +127,7 @@ export default function BookForm() {
           </div>
 
           <button type="submit" className="submit" id="submit">
-            Add Book
+           {isEdit ? "Edit":"Add"} Book
           </button>
         </form>
       </div>
