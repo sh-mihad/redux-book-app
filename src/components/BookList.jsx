@@ -13,35 +13,32 @@ export default function BookList({ setEditData, setEdit }) {
     dispatch(fetchBooks);
   }, [dispatch]);
 
-  let renderBooks = [];
-  if (status.filter === "featured") {
-    renderBooks = books.filter((book) => book.featured);
-  } else {
-    renderBooks = books;
-  }
-  console.log("status.searchTerm",status.searchTerm);
+  // let renderBooks = [];
+  // if (status.filter === "featured") {
+  //   renderBooks = books.filter((book) => book.featured);
+  // } else {
+  //   renderBooks = books;
+  // }
+  console.log("status.searchTerm", status.searchTerm);
   return (
     <div className="lws-bookContainer">
-      {status.searchTerm
-        ? renderBooks
-            .filter((item) =>
-              item?.name?.toLowerCase().includes(status.searchTerm.toLowerCase())
-            ).map((book) => (
-              <BookCard
-                key={book.id}
-                book={book}
-                setEdit={setEdit}
-                setEditData={setEditData}
-              />
-            ))
-        : renderBooks?.map((book) => (
-            <BookCard
-              key={book.id}
-              book={book}
-              setEdit={setEdit}
-              setEditData={setEditData}
-            />
-          ))}
+      {books
+        .filter((book) => (status.filter === "featured" ? book.featured : true))
+        .filter((item) =>
+          status.searchTerm
+            ? item?.name
+                ?.toLowerCase()
+                .includes(status.searchTerm.toLowerCase())
+            : true
+        )
+        .map((book) => (
+          <BookCard
+            key={book.id}
+            book={book}
+            setEdit={setEdit}
+            setEditData={setEditData}
+          />
+        ))}
     </div>
   );
 }
